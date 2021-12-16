@@ -17,20 +17,25 @@ def main():
     frames = []
 
     serial_comm.move('right')
-
-    for i, frame in enumerate(camera.capture_continuous(
-            rawCapture, format='bgr', use_video_port=True)):
-        image = frame.array
-        frames.append(image)
-        detections = detector.detect(image)
-        if len(detections) != 0:
-            print(detections)
-            serial_comm.move('stop')
-            break
-        rawCapture.truncate(0)
-        if i == 3000:
-            break
-        time.sleep(0.1)
+    try:
+        for i, frame in enumerate(camera.capture_continuous(
+                rawCapture, format='bgr', use_video_port=True)):
+            image = frame.array
+            frames.append(image)
+            detections, drawn = detector.detect(image)
+            if len(detections) != 0:
+                frames.append(drawn)
+                print(len(detections))
+                # print(detections)
+                serial_comm.move('stop')
+                break
+            rawCapture.truncate(0)
+            if i == 3000:
+                break
+            time.sleep(0.1)
+    except Exception as e:
+        print(e)
+        serial_comm.move('stop')
 
     cv2.imwrite('output.png', frames[-1])
     elapsed = time.time() - start

@@ -1,18 +1,22 @@
 import serial
 import time
+import serial_comm
 
-ser = serial.Serial('/dev/ttyACM1', 38400, timeout=1)
-ser.flush()
-
-ser.write(b'bl')
+serial_comm.move('forward')
+# ser.write(b'bl')
+print(serial_comm.read_ticks())
 time.sleep(2)
-ser.write(b'ss')
+serial_comm.move('stop')
+print(serial_comm.read_ticks())
 time.sleep(2)
-ser.write(b'cl')
+serial_comm.move('backward')
+print(serial_comm.read_ticks())
 time.sleep(2)
-ser.write(b'ss')
+serial_comm.move('stop')
+print(serial_comm.read_ticks())
 time.sleep(2)
-ser.write(b'dl')
+serial_comm.move('right')
+print(serial_comm.read_ticks())
 time.sleep(2)
-ser.write(b'ss')
-
+serial_comm.move('stop')
+print(serial_comm.read_ticks())

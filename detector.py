@@ -14,6 +14,7 @@ params.filterByArea = True
 params.minArea = 100
 detector = cv2.SimpleBlobDetector_create(parameters=params)
 
+
 def detect(img):
     blurred = cv2.blur(img, (5, 5))
     hls = cv2.cvtColor(blurred, cv2.COLOR_BGR2HLS)
