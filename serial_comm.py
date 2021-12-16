@@ -1,5 +1,4 @@
 import serial
-import struct
 import os
 
 acm = [x for x in os.listdir('/dev') if x.startswith('ttyACM')][0]
@@ -17,8 +16,8 @@ CODE_STOP = b'sl'
 def read_ticks():
     result = None
     while ser.in_waiting:
-        data = ser.read(size=8)
-        result = struct.unpack('II', data)
+        data = ser.readline()
+        result = list(map(int, data.split(',')))
     return result
 
 
