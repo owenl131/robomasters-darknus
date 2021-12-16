@@ -2,29 +2,45 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 import cv2
 import time
+import serial_comm
+import detector
 
-resolution = (640, 480)
-camera = PiCamera()
-camera.resolution = resolution
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=resolution)
+def main():
+    resolution = (640, 480)
+    camera = PiCamera()
+    camera.resolution = resolution
+    camera.framerate = 32
+    rawCapture = PiRGBArray(camera, size=resolution)
 
-time.sleep(0.1)
-start = time.time()
-frames = []
+    time.sleep(0.1)
+    start = time.time()
+    frames = []
 
-for i, frame in enumerate(camera.capture_continuous(
-        rawCapture, format='bgr', use_video_port=True)):
-    image = frame.array
-    frames.append(image)
-    rawCapture.truncate(0)
-    if i == 300:
-        break
+    serial_comm.move('right')
 
-cv2.imwrite('output.png', frames[-1])
-elapsed = time.time() - start
+    for i, frame in enumerate(camera.capture_continuous(
+            rawCapture, format='bgr', use_video_port=True)):
+        image = frame.array
+        frames.append(image)
+        detections = detector.detect(image)
+        if len(detections) != 0:
+            print(detections)
+            serial_comm.move('stop')
+            break
+        rawCapture.truncate(0)
+        if i == 3000:
+            break
+        time.sleep(0.1)
 
-print('elapsed', elapsed)
-print('per frame', elapsed / 1000)
-print('FPS', 1 / (elapsed / 1000))
+    cv2.imwrite('output.png', frames[-1])
+    elapsed = time.time() - start
 
+    print('elapsed', elapsed)
+    print('per frame', elapsed / 1000)
+    print('FPS', 1 / (elapsed / 1000))
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as e:
+        print(e)

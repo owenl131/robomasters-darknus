@@ -1,13 +1,13 @@
 import serial
 
-ser = serial.Serial('/dev/ttyACM0', 38400, timeout=1)
+ser = serial.Serial('/dev/ttyACM1', 38400, timeout=1)
 ser.flush()
 
-CODE_FORWARD = b'b'
-CODE_BACKWARD = b'c'
-CODE_LEFT = b'd'
-CODE_RIGHT = b'e'
-CODE_STOP = b's'
+CODE_FORWARD = b'bl'
+CODE_BACKWARD = b'cl'
+CODE_LEFT = b'dl'
+CODE_RIGHT = b'el'
+CODE_STOP = b'sl'
 
 def move(direction):
     if direction == 'left':
