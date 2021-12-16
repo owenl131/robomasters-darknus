@@ -14,6 +14,7 @@ params.filterByArea = True
 params.minArea = 100
 detector = cv2.SimpleBlobDetector_create(parameters=params)
 
+
 def detect(img):
     blurred = cv2.blur(img, (5, 5))
     hls = cv2.cvtColor(blurred, cv2.COLOR_BGR2HLS)
@@ -29,4 +30,5 @@ def detect(img):
     print(f'Detected {len(keypoints)} keypoints')
     for k in keypoints:
         print(f'  At {int(k.pt[0])}, {int(k.pt[1])} with size {k.size}')
-    return cv2.drawKeypoints(masked, keypoints, None, (0, 0, 255), flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    return keypoints
+    # return cv2.drawKeypoints(masked, keypoints, None, (0, 0, 255), flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
