@@ -1,5 +1,4 @@
 import serial
-import struct
 import os
 import time
 

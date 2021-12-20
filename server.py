@@ -2,11 +2,12 @@ import redis
 import cv2
 import base64
 import serialize
-from flask import Flask
+from flask import Flask, send_from_directory
 
 r = redis.Redis()
 
 app = Flask(__name__)
+
 
 @app.route('/<name>')
 def get(name):
@@ -18,6 +19,7 @@ def get(name):
     jpg_text = base64.b64encode(buffer)
     return jpg_text
 
+
 @app.route('/')
 def get_view():
     img = r.get('cap')
@@ -28,9 +30,14 @@ def get_view():
     jpg_text = base64.b64encode(buffer).decode()
     return f'<img src="data:image/jpg;base64,{jpg_text}" />'
 
+
+@app.route('/public/<path:path>')
+def send_public(path):
+    return send_from_directory('public', path)
+
+
 if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5001)
     except Exception as e:
         print(e)
-
