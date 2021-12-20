@@ -14,20 +14,28 @@ CODE_LEFT = b'dm'
 CODE_RIGHT = b'em'
 CODE_STOP = b'sm'
 
+buffer_read = ''
+
 
 def read_ticks():
-    result = None
-    while ser.in_waiting:
+    global buffer_read
+    if ser.in_waiting > 0:
+        buffer_read += ser.read(ser.in_waiting).decode('utf-8')
+    # print(buffer_read)
+    if '\n' in buffer_read:
+        index = buffer_read.index('\n')
+        data = buffer_read[:index]
+        buffer_read = buffer_read[index + 1:]
         try:
-            data = ser.readline().decode('utf-8').strip()
-            result = list(map(int, data.split(',')))
+            values = list(map(int, data.split(',')))
+            if len(values) == 2:
+                return values
         except:
             pass
-    return result
+    return None
 
 
 def move(direction):
-    ser.flushInput()
     if direction == 'left':
         ser.write(CODE_LEFT)
     elif direction == 'right':
