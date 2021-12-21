@@ -21,7 +21,6 @@ def read_ticks():
     global buffer_read
     if ser.in_waiting > 0:
         buffer_read += ser.read(ser.in_waiting).decode('utf-8')
-    # print(buffer_read)
     if '\n' in buffer_read:
         index = buffer_read.index('\n')
         data = buffer_read[:index]
@@ -54,4 +53,3 @@ if __name__ == '__main__':
     print(ser.write(CODE_FORWARD))
     time.sleep(3)
     print(ser.write(CODE_STOP))
-
