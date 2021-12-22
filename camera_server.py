@@ -21,9 +21,9 @@ for i, frame in enumerate(camera.capture_continuous(
     image = frame.array
     frames.append(image)
     rawCapture.truncate(0)
-    r.set('cap', serialize.serialize(image))
-    if i == 300:
-        break
+    r.set('output', serialize.serialize(image))
+    # if i == 300:
+    #     break
 
 cv2.imwrite('output.png', frames[-1])
 elapsed = time.time() - start

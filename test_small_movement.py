@@ -16,6 +16,7 @@ def forward(rob, distance):
         if distance < 0:
             break
         time.sleep(0.03)
+    serial_comm.move('stop')
 
 
 def turn(rob, angle):
@@ -35,25 +36,20 @@ def turn(rob, angle):
         if angle < 0:
             break
         time.sleep(0.03)
+    serial_comm.move('stop')
 
 
 def main():
     rob = robot.Position(0, 0, math.pi / 2)
     r = redis.Redis()
-    turn(rob, -math.pi / 4)
-    forward(rob, 6000)
-    turn(rob, -math.pi / 4)
-    forward(rob, 500)
+    forward(rob, 1000)
     turn(rob, -math.pi / 2)
-    forward(rob, 3000)
-    # turn(rob, -math.pi / 4)
-    # forward(rob, 500)
-    # turn(rob, -math.pi / 2)
-    # forward(rob, 500)
-    # turn(rob, -math.pi / 4)
-    # forward(rob, 4500)
-    # turn(rob, -math.pi / 2)
-    # forward(rob, 2000)
+    forward(rob, 500)
+    turn(rob, math.pi)
+    forward(rob, 500)
+    turn(rob, math.pi / 2)
+    forward(rob, 1000)
+    turn(rob, -math.pi)
 
 
 if __name__ == '__main__':

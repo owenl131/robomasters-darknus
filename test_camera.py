@@ -23,8 +23,8 @@ def main():
                 rawCapture, format='bgr', use_video_port=True)):
             image = frame.array
             frames.append(image)
-            result = detector.detect(image)
-            r.set('cap', serialize.serialize(result))
+            detections, result = detector.detect(image)
+            r.set('output', serialize.serialize(result))
             rawCapture.truncate(0)
     except Exception as e:
         print(e)

@@ -12,7 +12,7 @@ class Position:
         self.heading = heading
         self.last_tick_left = None
         self.last_tick_right = None
-        self.wheel_radius = 32  # mm
+        self.wheel_radius = 34.6  # mm
         self.wheel_ticks = 40
         self.robot_width = 150  # mm
 
